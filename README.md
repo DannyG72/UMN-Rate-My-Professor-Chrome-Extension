@@ -15,4 +15,3 @@ To install:
 * The extension will now be installed
 
 Note: You must use the folder in which the manifest.json exists. 
-installed-extension

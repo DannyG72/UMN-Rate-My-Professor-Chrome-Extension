@@ -7,3 +7,12 @@
  
  p.s. I really dislike UI design so I apologize in advance.
  
+To install:
+
+* Go to chrome://extensions
+* Now, Enable developer mode
+* Click on Load Unpacked and the unzipped, file folder.
+* The extension will now be installed
+
+Note: You must use the folder in which the manifest.json exists. 
+installed-extension

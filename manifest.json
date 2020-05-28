@@ -1,12 +1,13 @@
 {
   "manifest_version": 2,
   "name": "Rate My Gopher UMN Professor Ratings",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Load Rate My Professor ratings on the University of Minnesota schedule builder website! This extension works for UMN TC.",
   "browser_action": {
   },
   "permissions": [
-     "https://solr-aws-elb-production.ratemyprofessors.com/*"
+     "https://solr-aws-elb-production.ratemyprofessors.com/*",
+     "storage"
   ],
   "icons": {
         "128": "icon128.png",

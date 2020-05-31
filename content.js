@@ -1,133 +1,92 @@
-$(document).ready(function () {
+$(document).ready(() => {
   'use strict';
 
   collectClassInformationWhenOnClassSpecificPage();
 
   document.body.style.width = '80%';
 
-  let rightSide = document.createElement('div');
-  rightSide.className = 'sideBar';
-  rightSide.id = 'chromeExtensionSideBar';
-  document.body.appendChild(rightSide);
+  const sidebar = $(`
+    <div id="chromeExtensionSideBar" class="sideBar">
+      <div class="topBar">
+        <span class="topBar-text">
+          <strong>
+            <a id="tobBar-title" target="_blank" href="https://yelt3d.com/coding-projects/umn-rate-my-professor-chrome-firefox-extension/">
+              RateMyGopher: Schedule Tools
+            </a>
+          </strong>
+        </span>
+      </div>
 
-  let topBar = document.createElement('div');
-  topBar.textAlign = 'center';
-  topBar.className = 'topBar';
-  rightSide.appendChild(topBar);
+      <button id="searchProfessorButton" class="custom-button-for-stuff">
+        Search Professors
+      </button>
 
-  let toggleBoxHide = document.createElement('div');
-  toggleBoxHide.textAlign = 'center';
-  toggleBoxHide.className = 'toggleBoxHide';
-  toggleBoxHide.id = 'chromeExtensionHideButton';
+      <button id="clearListButton" class="custom-button-for-stuff">
+        Clear List
+      </button>
+
+      <span id="resultList"></span>
+
+      <div class="credits">
+        <span class="credits-text">
+          Developed by
+          <strong>
+            <a target="_blank" href="https://www.linkedin.com/in/danielglynn72/">
+              Daniel Glynn
+            </a>
+          </strong>
+          with
+          <strong>
+            <a target="_blank" href="https://www.linkedin.com/in/samuel-o-brien-053959196/">
+              Samuel O'Brien
+            </a>
+          </strong>
+          .
+        </span>
+      </div>
+    </div>
+  `)[0];
+
+  document.body.appendChild(sidebar);
+
+  const toggleBoxHide = $(`
+    <div id="chromeExtensionHideButton" class="toggleBoxHide">
+      <span class="toggle-text">
+        Hide
+      </span>
+    </div>
+  `)[0];
   document.body.appendChild(toggleBoxHide);
 
-  let hideText = toggleBoxHide.appendChild(document.createElement('span'));
-  hideText.innerHTML = 'Hide';
-  hideText.style.color = '#FFCC33';
-  hideText.style.cursor = 'pointer';
-  hideText.style.textAlign = 'center';
-  hideText.style.margin = 'auto';
-  hideText.style.writingMode = 'vertical-rl';
-  hideText.style.fontWeight = 'bold';
-  hideText.style.fontSize = 'medium';
-  hideText.style.marginTop = '14px';
-  hideText.onclick = function () {
-    hideSideBar();
-  };
+  $(toggleBoxHide).on('click', hideSideBar);
 
-  let toggleBoxShow = document.createElement('div');
-  toggleBoxShow.textAlign = 'center';
-  toggleBoxShow.className = 'toggleBoxShow';
-  toggleBoxShow.style.display = 'none';
-  toggleBoxShow.id = 'chromeExtensionShowButton';
+  const toggleBoxShow = $(`
+    <div id="chromeExtensionShowButton" class="toggleBoxShow">
+      <span class="toggle-text">
+        Show
+      </span>
+    </div>
+  `)[0];
+
   document.body.appendChild(toggleBoxShow);
 
-  let showText = toggleBoxShow.appendChild(document.createElement('span'));
-  showText.innerHTML = 'Show';
-  showText.style.color = '#FFCC33';
-  showText.style.cursor = 'pointer';
-  showText.style.textAlign = 'center';
-  showText.style.margin = 'auto';
-  showText.style.writingMode = 'vertical-rl';
-  showText.style.fontWeight = 'bold';
-  showText.style.fontSize = 'medium';
-  showText.style.marginTop = '14px';
-  showText.onclick = function () {
-    showSideBar();
-  };
+  $(toggleBoxShow).on('click', showSideBar);
 
-  let topBarText = document.createElement('span');
-  topBarText.width = '400px';
-  topBarText.display = 'inline-block';
-  topBarText.style.marginTop = '10px';
-  topBarText.style.fontWeight = 'bold';
-  topBarText.style.fontSize = 'x-large';
-  topBarText.style.maxLines = '2';
-
-  let RateMyGopherURL =
-    'https://yelt3d.com/coding-projects/umn-rate-my-professor-chrome-firefox-extension/';
-  let RateMyGopherBold = document.createElement('strong');
-  let RateMyGopherLink = document.createElement('a');
-  RateMyGopherLink.href = RateMyGopherURL;
-  RateMyGopherLink.target = '_blank';
-  RateMyGopherLink.innerText = 'RateMyGopher: Schedule Tools';
-  RateMyGopherLink.style.color = '#FFCC33';
-  RateMyGopherLink.style.maxLines = '2';
-  RateMyGopherBold.appendChild(RateMyGopherLink);
-  topBarText.appendChild(RateMyGopherBold);
-
-  topBar.appendChild(topBarText);
-
-  let credits = document.createElement('div');
-  credits.className = 'credits';
-  rightSide.appendChild(credits);
-
-  let dannyURL = 'https://www.linkedin.com/in/danielglynn72/';
-  let dannyBold = document.createElement('strong');
-  let dannyLink = document.createElement('a');
-  dannyLink.href = dannyURL;
-  dannyLink.target = '_blank';
-  dannyLink.innerText = 'Daniel Glynn';
-  dannyBold.appendChild(dannyLink);
-
-  let samURL = 'https://www.linkedin.com/in/samuel-o-brien-053959196/';
-  let samBold = document.createElement('strong');
-  let samLink = document.createElement('a');
-  samLink.href = samURL;
-  samLink.target = '_blank';
-  samLink.innerText = "Samuel O'Brien";
-  samBold.appendChild(samLink);
-
-  let creditText = document.createElement('span');
-  creditText.style.margin = '4px';
-  creditText.style.color = '#fff';
-  creditText.style.fontSize = 'x-small';
-  creditText.appendChild(document.createTextNode('Developed By '));
-  creditText.appendChild(dannyBold);
-  creditText.appendChild(document.createTextNode(' with '));
-  creditText.appendChild(samBold);
-  creditText.appendChild(document.createTextNode('.'));
-  credits.appendChild(creditText);
-
-  let resultList = document.createElement('span');
+  const resultList = $('#resultList')[0];
 
   currentProfessors = new Set();
-  let searchProfessor = document.createElement('Button');
-  rightSide.appendChild(searchProfessor);
-  searchProfessor.id = 'searchProfessorButton';
-  searchProfessor.innerHTML = 'Search Professors';
-  searchProfessor.className = 'custom-button-for-stuff';
-  searchProfessor.style.width = '250px';
-  searchProfessor.style.marginTop = '74px';
 
-  searchProfessor.addEventListener('click', function () {
+  $('#searchProfessorButton').on('click', () => {
     let returnedToPage = 0;
     let newProfessors = searchProfessors(document.documentElement.outerHTML);
+
     if (window.location.href.includes('schedulebuilder.umn.edu/schedules')) {
       collectScheduleInformation(currentProfessors, resultList);
     }
+
     addProfessors(currentProfessors, newProfessors, resultList);
-    $(window).focus(function () {
+
+    $(window).focus(() => {
       if (returnedToPage == 0) {
         sleep(1000);
         if (window.location.href.includes('schedulebuilder.umn.edu/schedules')) {
@@ -137,20 +96,14 @@ $(document).ready(function () {
       }
     });
   });
-  let clearList = document.createElement('Button');
-  clearList.id = 'clearListButton';
-  clearList.innerHTML = 'Clear List';
-  clearList.className = 'custom-button-for-stuff';
-  clearList.style.width = '250px';
-  clearList.addEventListener('click', function () {
+
+  $('#clearListButton').on('click', () => {
     chrome.storage.local.clear(); // Remove previous results
     while (resultList.firstChild) {
       resultList.removeChild(resultList.firstChild);
       currentProfessors = new Set();
     }
   });
-  rightSide.appendChild(clearList);
-  rightSide.appendChild(resultList);
 });
 
 let cache = {};

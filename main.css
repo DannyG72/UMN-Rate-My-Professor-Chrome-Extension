@@ -13,12 +13,17 @@
   outline: none;
   display: block;
   min-width: 250px;
+  width: 250px;
 }
 
 .custom-button-for-stuff:hover {
   background: #da291c;
   color: #000;
   z-index: 1033;
+}
+
+#searchProfessorButton {
+  margin-top: 74px;
 }
 
 .sideBar {
@@ -50,7 +55,22 @@
   background: #7a0019;
 }
 
+.topBar-text {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: x-large;
+  max-lines: 2;
+}
+
+#tobBar-title {
+  color: #ffcc33;
+  max-lines: 2;
+}
+
 .toggleBoxShow {
+  display: none;
+  text-align: center;
   justify-content: center;
   align-items: center;
   justify-content: center;
@@ -64,6 +84,7 @@
 }
 
 .toggleBoxHide {
+  text-align: center;
   justify-content: center;
   align-items: center;
   justify-content: center;
@@ -74,6 +95,17 @@
   right: 20px;
   z-index: 1033;
   background: #7a0019;
+}
+
+.toggle-text {
+  color: #ffcc33;
+  cursor: pointer;
+  text-align: center;
+  margin: auto;
+  writing-mode: vertical-rl;
+  font-weight: bold;
+  font-size: medium;
+  margin-top: 14px;
 }
 
 .credits {
@@ -88,6 +120,12 @@
   right: 0%;
   z-index: 1033;
   background: #7a0019;
+}
+
+.credits-text {
+  margin: 4px;
+  color: #fff;
+  font-size: x-small;
 }
 
 .verticaltext {

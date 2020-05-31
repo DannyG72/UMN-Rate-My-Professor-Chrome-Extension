@@ -1,0 +1,96 @@
+.custom-button-for-stuff {
+  background: #7a0019;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  margin: 0px auto;
+  margin-bottom: 10px;
+  height: 30px;
+  font-size: 18px;
+  z-index: 1033;
+  outline: none;
+  display: block;
+  min-width: 250px;
+}
+
+.custom-button-for-stuff:hover {
+  background: #da291c;
+  color: #000;
+  z-index: 1033;
+}
+
+.sideBar {
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  justify-content: center;
+  position: fixed;
+  width: 20%;
+  height: 100%;
+  bottom: 0;
+  right: 0%;
+  z-index: 1032;
+  background: #fff;
+  overflow-y: scroll;
+}
+
+.topBar {
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  position: fixed;
+  width: 20%;
+  height: 64px;
+  top: 0;
+  right: 0;
+  z-index: 1033;
+  background: #7a0019;
+}
+
+.toggleBoxShow {
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 25px;
+  height: 65px;
+  top: 120px;
+  right: 0px;
+  z-index: 1033;
+  background: #7a0019;
+}
+
+.toggleBoxHide {
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 25px;
+  height: 65px;
+  top: 87px;
+  right: 20px;
+  z-index: 1033;
+  background: #7a0019;
+}
+
+.credits {
+  justify-content: flex-start;
+  align-items: center;
+  padding: 3px;
+  justify-content: center;
+  position: fixed;
+  width: 20%;
+  height: 5%;
+  bottom: 0;
+  right: 0%;
+  z-index: 1033;
+  background: #7a0019;
+}
+
+.verticaltext {
+  writing-mode: vertical-rl;
+  text-align: center;
+}

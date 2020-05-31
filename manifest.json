@@ -20,8 +20,13 @@
   "content_scripts": [
     {
       "matches": ["https://schedulebuilder.umn.edu/*"],
-      "js": ["jquery-3.4.1.min.js", "content.js"],
-      "css": ["main.css"],
+      "js": [
+        "jquery-3.4.1.min.js",
+        "bootstrap/js/bootstrap.bundle.js",
+        "bootstrap/js/bootstrap.js",
+        "content.js"
+      ],
+      "css": ["bootstrap/css/bootstrap.css", "bootstrap/css/bootstrap-grid.css", "main.css"],
       "run_at": "document_end"
     }
   ]

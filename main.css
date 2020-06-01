@@ -1,100 +1,116 @@
-.custom-button-for-stuff {
-  background: #7a0019;
-  color: #fff;
-  border-radius: 10px;
-  border: none;
-  box-shadow: none;
-  cursor: pointer;
-  margin: 0px auto;
-  margin-bottom: 10px;
-  height: 30px;
-  font-size: 18px;
-  z-index: 1033;
-  outline: none;
-  display: block;
-  min-width: 250px;
-  width: 250px;
+/* Define global CSS variables */
+:root {
+  --sidepanel-width: 400px;
+  --umn-maroon: #7a0019;
+  --umn-gold: #ffcc33;
 }
 
-.custom-button-for-stuff:hover {
-  background: #da291c;
-  color: #000;
-  z-index: 1033;
+/* Adjusts the body of schedule builder to the correct width */
+#app-container.schedule-builder--sidepanel-showing,
+#umn-container.schedule-builder--sidepanel-showing {
+  width: calc(100vw - var(--sidepanel-width) - 15px);
+  margin-left: 0;
+  margin-right: 0;
+}
+#app-header .col-xs-12.affix {
+  width: calc(100vw - var(--sidepanel-width) - 15px);
+  margin-right: 0;
+}
+#app-search {
+  display: flex;
 }
 
-#searchProfessorButton {
-  margin-top: 74px;
+#app-container.schedule-builder--sidepanel-showing div#app-navbar div {
+  max-width: 175px;
 }
 
-.sideBar {
+/* Sidepanel styles */
+.sidepanel {
   justify-content: flex-start;
   align-items: center;
-  padding: 10px;
   justify-content: center;
   position: fixed;
-  width: 20%;
+  width: var(--sidepanel-width);
   height: 100%;
   bottom: 0;
   right: 0%;
-  z-index: 1032;
-  background: #fff;
-  overflow-y: scroll;
+  z-index: 10000;
+  background: #f5f5f5;
+  overflow-y: auto;
 }
 
-.topBar {
-  justify-content: center;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  position: fixed;
-  width: 20%;
-  height: 64px;
-  top: 0;
-  right: 0;
-  z-index: 1033;
-  background: #7a0019;
-}
-
-.topBar-text {
-  display: inline-block;
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: x-large;
-  max-lines: 2;
-}
-
-#tobBar-title {
-  color: #ffcc33;
-  max-lines: 2;
-}
-
-.toggleBoxShow {
+.sidepanel--hidden {
   display: none;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  width: 25px;
-  height: 65px;
-  top: 120px;
-  right: 0px;
-  z-index: 1033;
-  background: #7a0019;
 }
 
-.toggleBoxHide {
-  text-align: center;
-  justify-content: center;
+.sidepanel .top-bar {
+  border-radius: 0px;
+  background: #ffcc33;
+  height: 64px;
+  padding-left: 15px;
+}
+
+.sidepanel .top-bar__link {
+  height: auto;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  position: fixed;
-  width: 25px;
-  height: 65px;
-  top: 87px;
-  right: 20px;
-  z-index: 1033;
-  background: #7a0019;
+  padding-left: 0;
+}
+
+.sidepanel .top-bar__text {
+  color: #7a0019;
+}
+
+.top-bar .logo-img {
+  background-color: var(--umn-maroon);
+  padding: 4px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.sidepanel .control-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidepanel .control-buttons button {
+  flex: 0;
+}
+
+#rate-my-gopher-toggle {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  margin-left: 8px;
+  background-color: var(--umn-maroon);
+  border-color: transparent;
+}
+
+#rate-my-gopher-toggle:hover {
+  border-color: transparent;
+  filter: brightness(85%);
+}
+
+#rate-my-gopher-toggle:focus {
+  border-color: transparent;
+  filter: brightness(65%);
 }
 
 .toggle-text {
@@ -108,27 +124,41 @@
   margin-top: 14px;
 }
 
-.credits {
-  justify-content: flex-start;
+.professor-card {
+  margin-bottom: 8px;
+}
+
+.professor-card__title {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 3px;
-  justify-content: center;
+  margin-top: 0;
+}
+
+.professor-card__close {
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 18px;
+  color: red;
+}
+
+.professor-card__close:hover {
+  cursor: pointer;
+  filter: brightness(65%);
+}
+
+.sidepanel .footer {
   position: fixed;
-  width: 20%;
-  height: 5%;
   bottom: 0;
-  right: 0%;
   z-index: 1033;
   background: #7a0019;
+  width: 400px;
+  left: calc(100vw - var(--sidepanel-width) - 15px);
+  border-radius: 0;
+  margin-bottom: 0;
 }
 
-.credits-text {
+.sidepanel .footer__text {
   margin: 4px;
   color: #fff;
-  font-size: x-small;
-}
-
-.verticaltext {
-  writing-mode: vertical-rl;
-  text-align: center;
 }

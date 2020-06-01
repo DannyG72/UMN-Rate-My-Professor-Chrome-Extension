@@ -1,34 +1,40 @@
 $(document).ready(() => {
   'use strict';
+  // Have the sidepanel shown initially
+  $('#app-container').addClass('schedule-builder--sidepanel-showing');
+  $('#umn-container').addClass('schedule-builder--sidepanel-showing');
+  $('#app-header').addClass('schedule-builder--sidepanel-showing');
 
   collectClassInformationWhenOnClassSpecificPage();
 
-  document.body.style.width = '80%';
-
-  const sidebar = $(`
-    <div id="chromeExtensionSideBar" class="sideBar">
-      <div class="topBar">
-        <span class="topBar-text">
-          <strong>
-            <a id="tobBar-title" target="_blank" href="https://yelt3d.com/coding-projects/umn-rate-my-professor-chrome-firefox-extension/">
+  // Sidepanel html string
+  const sidepanel = $(`
+    <div id="chromeExtensionSideBar" class="sidepanel shadow-lg">
+      <nav class="navbar navbar-expand-lg fixed-top top-bar">
+        <a 
+          target="_blank" 
+          href="https://yelt3d.com/coding-projects/umn-rate-my-professor-chrome-firefox-extension/" 
+          class="navbar-brand top-bar__link">
+            <img src="${chrome.runtime.getURL(
+              'images/icon32.png'
+            )}" width="35" height="35" class="d-inline-block align-center logo-img" alt="logo" loading="lazy">
+            <span class="top-bar__text">
               RateMyGopher: Schedule Tools
-            </a>
-          </strong>
-        </span>
+            </span>
+        </a>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="control-buttons mb-4" role="group">
+          <button id="searchProfessorButton" type="button" class="btn btn-primary">Search Professors</button>
+          <button id="clearListButton" type="button" class="btn btn-primary">Clear List</button>
+        </div>
+
+        <div id="resultList"></div>
       </div>
 
-      <button id="searchProfessorButton" class="custom-button-for-stuff">
-        Search Professors
-      </button>
-
-      <button id="clearListButton" class="custom-button-for-stuff">
-        Clear List
-      </button>
-
-      <span id="resultList"></span>
-
-      <div class="credits">
-        <span class="credits-text">
+      <nav class="navbar fixed-bottom footer">
+        <span class="navbar-text footer__text">
           Developed by
           <strong>
             <a target="_blank" href="https://www.linkedin.com/in/danielglynn72/">
@@ -40,40 +46,21 @@ $(document).ready(() => {
             <a target="_blank" href="https://www.linkedin.com/in/samuel-o-brien-053959196/">
               Samuel O'Brien
             </a>
-          </strong>
-          .
+          </strong>.
         </span>
-      </div>
+      </nav>
     </div>
   `)[0];
+  document.body.appendChild(sidepanel);
 
-  document.body.appendChild(sidebar);
-
-  const toggleBoxHide = $(`
-    <div id="chromeExtensionHideButton" class="toggleBoxHide">
-      <span class="toggle-text">
-        Hide
-      </span>
-    </div>
+  // Add the toggle button to schedule builder
+  const toggleButton = $(`
+    <button id="rate-my-gopher-toggle" class="btn-primary toggle-button">Rate My Gopher</button>
   `)[0];
-  document.body.appendChild(toggleBoxHide);
-
-  $(toggleBoxHide).on('click', hideSideBar);
-
-  const toggleBoxShow = $(`
-    <div id="chromeExtensionShowButton" class="toggleBoxShow">
-      <span class="toggle-text">
-        Show
-      </span>
-    </div>
-  `)[0];
-
-  document.body.appendChild(toggleBoxShow);
-
-  $(toggleBoxShow).on('click', showSideBar);
+  $('#app-search').append(toggleButton);
+  $(toggleButton).on('click', toggleSidebar);
 
   const resultList = $('#resultList')[0];
-
   currentProfessors = new Set();
 
   $('#searchProfessorButton').on('click', () => {
@@ -131,79 +118,173 @@ observer.observe(document, {
   subtree: true,
 });
 
+/**
+ * Adds new professors to the result list
+ * @param {Array[string]} currentProfessors
+ * @param {Array[string]} newProfessors
+ * @param {Array[string]} resultList
+ * @returns {void}
+ */
 function addProfessors(currentProfessors, newProfessors, resultList) {
-  console.log('currentProfessors:', currentProfessors);
-  console.log('newprofessors:', newProfessors);
-  for (let i = 0; i < newProfessors.length; i++) {
-    if (currentProfessors.has(newProfessors[i])) {
-      console.log('Skipping ' + newProfessors[i]);
-    } else {
-      currentProfessors.add(newProfessors[i]);
-      console.log('Adding ' + newProfessors[i]);
-      console.log(currentProfessors);
+  for (const newProf of newProfessors) {
+    if (!currentProfessors.has(newProf)) {
+      currentProfessors.add(newProf);
       getProfessorInfo(
-        newProfessors[i],
-        function (data) {
+        newProf,
+        (data) => {
           // Function runs if professor is found
-          let url = 'https://www.ratemyprofessors.com/ShowRatings.jsp?tid=' + data.id;
+          const url = `https://www.ratemyprofessors.com/ShowRatings.jsp?tid=${data.id}`;
 
-          let bold = document.createElement('strong');
-          let a = document.createElement('a');
-          a.href = url;
-          a.target = '_blank';
-          a.innerText = data.name;
-          bold.appendChild(a);
+          const professor = $(`
+            <div class="card shadow professor-card">
+              <div class="card-body">
+                <h4 class="card-title professor-card__title">
+                  <a target="_blank" href="${url}">${data.name}</a>
+                  <span class="professor-card__close">&times;</span>
+                </h4>
+                <p class="card-text">
+                  Rating: ${data.totalRating} <br>
+                  Difficulty Score: ${data.easyScore} <br>
+                  Reviews: ${data.numberOfRatings} <br>
+                </p>
+              </div>
+            </div>
+          `)[0];
 
-          let professor = document.createElement('span');
-          professor.appendChild(bold);
-          professor.appendChild(document.createTextNode(' (' + data.numberOfRatings + ' Reviews)'));
-          let spanText = professor.appendChild(document.createElement('span'));
-          spanText.innerHTML = ' (Remove)\n';
-          spanText.style.color = 'Red';
-          spanText.style.cursor = 'pointer';
-          spanText.onclick = function () {
-            professor.remove();
-            console.log(currentProfessors);
-            currentProfessors.delete(newProfessors[i]);
-            currentProfessors = new Set();
-          };
-          professor.appendChild(document.createElement('br'));
-          if (data.numberOfRatings > 0) {
-            professor.appendChild(document.createTextNode('Rating: ' + data.totalRating));
-            professor.appendChild(document.createElement('br'));
-            professor.appendChild(document.createTextNode('Difficulty Score: ' + data.easyScore));
-            professor.appendChild(document.createElement('br'));
-            if (data.reviews.length > 1) {
-              professor.appendChild(document.createTextNode('Reviews: ' + data.reviews + '\n'));
-              professor.appendChild(document.createElement('br'));
-            }
-          } else {
-          }
-          professor.appendChild(document.createElement('br'));
-          // professor.appendChild(document.createElement('br'));
+          $(professor)
+            .find('.professor-card__close')
+            .on('click', () => {
+              professor.remove();
+              currentProfessors.delete(newProf);
+              currentProfessors = new Set();
+            });
+
           resultList.appendChild(professor);
         },
-        function (name) {
-          // function runs if professor is not found
-          let professor = document.createElement('p');
-          let bold = document.createElement('strong');
-          bold.innerText = name;
-          professor.appendChild(bold);
-          professor.appendChild(document.createTextNode(' (Not Found)'));
-          let spanText = professor.appendChild(document.createElement('span'));
-          spanText.innerHTML = ' (Remove)\n';
-          spanText.style.color = 'Red';
-          spanText.style.cursor = 'pointer';
-          spanText.onclick = function () {
-            professor.remove();
-            currentProfessors.delete(newProfessors[i]);
-            currentProfessors = new Set();
-          };
+        (name) => {
+          // Function runs if professor is not found
+          const professor = $(`
+            <div class="card shadow-sm professor-card">
+              <div class="card-body">
+                <h4 class="card-title professor-card__title">
+                  <span>${name} (Not Found)</span>
+                  <span class="professor-card__close">&times;</span>
+                </h4>
+              </div>
+            </div>
+          `)[0];
+
+          $(professor)
+            .find('.professor-card__close')
+            .on('click', () => {
+              professor.remove();
+              currentProfessors.delete(newProf);
+              currentProfessors = new Set();
+            });
+
           resultList.appendChild(professor);
         }
       );
     }
   }
+}
+
+/**
+ * Toggles the sidepanel by adding specific classes to it
+ */
+function toggleSidebar() {
+  const sidepanel = $('#chromeExtensionSideBar');
+  if (sidepanel.hasClass('sidepanel--hidden')) {
+    sidepanel.removeClass('sidepanel--hidden');
+    for (const selector of ['#app-container', '#umn-container', '#app-header']) {
+      $(selector).addClass('schedule-builder--sidepanel-showing');
+    }
+    $('#app-header .col-xs-12.affix').css({
+      width: 'calc(100vw - var(--sidepanel-width) - 15px)',
+      marginRight: 0,
+    });
+  } else {
+    sidepanel.addClass('sidepanel--hidden');
+    for (const selector of ['#app-container', '#umn-container', '#app-header']) {
+      $(selector).removeClass('schedule-builder--sidepanel-showing');
+    }
+    $('#app-header .col-xs-12.affix').css({ width: '100%', marginRight: 'auto' });
+  }
+}
+
+/**
+ * Creates a list of the professors in the html string
+ * @param {string} string - the html string to find the professor names in
+ * @returns {Array[string]} - a string array of the the professors
+ */
+function searchProfessors(string) {
+  let professorList = [];
+  let classes = Array.from(string.split('<a href="http://www.umn.edu/lookup?')).map((i) => i);
+  for (const c of classes) {
+    if (c.includes('type=Internet+ID')) {
+      let professorName = c
+        .split('type=Internet+ID')[1]
+        .split('target="_blank">')[1]
+        .split('</a><br>')[0]
+        .toLowerCase()
+        .replace(' ', '+');
+      professorList.push(professorName);
+    }
+  }
+  return [...new Set(professorList)];
+}
+
+/**
+ * Get the professors information from Rate My Professor and return an object with the data
+ * @param {string} name - the name of the profesor's whose info to retrieve (in 'firstname+lastname' format)
+ * @param {function} func - a function that takes one argument of the data object to be called when the data is sucessfully retrieved
+ * @param {function} errFunc - a function that takes one argument of the professor name to be called if the professor is not found
+ * @returns {void}
+ */
+function getProfessorInfo(name, func, errFunc) {
+  if (name in cache) {
+    // Use the data in the cache if it was already fetched
+    func(cache[name]);
+    return;
+  }
+
+  const url =
+    'https://solr-aws-elb-production.ratemyprofessors.com//solr/rmp/select/?solrformat=true&rows=20&wt=json&json.wrf=noCB&callback=noCB&q=' +
+    name +
+    '&qf=teacherfirstname_t%5E2000+teacherlastname_t%5E2000+teacherfullname_t%5E2000+teacherfullname_autosuggest&bf=pow(total_number_of_ratings_i%2C2.1)&sort=score+desc&defType=edismax&siteName=rmp&rows=20&group=off&group.field=content_type_s&group.limit=20&fq=schoolname_t%3A%22University+of+Minnesota%5C-Twin+Cities%22&fq=schoolid_s%3A1257';
+
+  // Use the fetch API to get the prof data
+  fetch(url)
+    .then((response) => response.text())
+    .then((responseText) => {
+      // Get JSON from the body string
+      const responseJSON = JSON.parse(responseText.substring(5, responseText.length - 1));
+      const profData = responseJSON.response.docs[0];
+
+      // No Professor was Found
+      if (responseJSON.response.docs.length == 0) {
+        errFunc(toTitleCase(name.replace('+', ' ')));
+        return;
+      }
+
+      // Clean the data and call the success function with it
+      const cleanedData = {
+        id: profData.id.replace('teacher:', ''),
+        name: toTitleCase(name.replace('+', ' ')),
+        numberOfRatings: profData.total_number_of_ratings_i,
+        clarityScore: profData.averageclarityscore_rf,
+        easyScore: profData.averageeasyscore_rf,
+        helpfulScore: profData.averageheulfulscore_rf,
+        hotScore: profData.averagehotscore_rf,
+        totalRating: profData.averageratingscore_rf,
+        reviews:
+          profData.tag_s_mv != undefined
+            ? Array.from(profData.tag_s_mv).map((i) => ' ' + i.replace('.', ''))
+            : [],
+      };
+      cache[name] = cleanedData;
+      func(cleanedData);
+    });
 }
 
 function collectScheduleInformation(currentProfessors, resultList) {
@@ -292,57 +373,6 @@ function collectClassInformationWhenOnClassSpecificPage() {
   }
 }
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
-function getProfessorInfo(name, func, errFunc) {
-  if (name in cache) {
-    func(cache[name]);
-  } else {
-    const apiUrl =
-      'https://solr-aws-elb-production.ratemyprofessors.com//solr/rmp/select/?solrformat=true&rows=20&wt=json&json.wrf=noCB&callback=noCB&q=' +
-      name +
-      '&qf=teacherfirstname_t%5E2000+teacherlastname_t%5E2000+teacherfullname_t%5E2000+teacherfullname_autosuggest&bf=pow(total_number_of_ratings_i%2C2.1)&sort=score+desc&defType=edismax&siteName=rmp&rows=20&group=off&group.field=content_type_s&group.limit=20&fq=schoolname_t%3A%22University+of+Minnesota%5C-Twin+Cities%22&fq=schoolid_s%3A1257';
-    let xhttp = new XMLHttpRequest();
-    xhttp.open('GET', apiUrl);
-    xhttp.send();
-    xhttp.onload = function (e) {
-      let jsonResponse = JSON.parse(this.responseText.substring(5, this.responseText.length - 1));
-      console.log(jsonResponse);
-
-      // No Professor was Found
-      if (jsonResponse.response.docs.length == 0) {
-        errFunc(toTitleCase(name.replace('+', ' ')));
-        return;
-      }
-
-      let data = {
-        id: jsonResponse.response.docs[0].id.replace('teacher:', ''),
-        name: toTitleCase(name.replace('+', ' ')),
-        numberOfRatings: jsonResponse.response.docs[0].total_number_of_ratings_i,
-        clarityScore: jsonResponse.response.docs[0].averageclarityscore_rf,
-        easyScore: jsonResponse.response.docs[0].averageeasyscore_rf,
-        helpfulScore: jsonResponse.response.docs[0].averageheulfulscore_rf,
-        hotScore: jsonResponse.response.docs[0].averagehotscore_rf,
-        totalRating: jsonResponse.response.docs[0].averageratingscore_rf,
-        reviews:
-          jsonResponse.response.docs[0].tag_s_mv != undefined
-            ? Array.from(jsonResponse.response.docs[0].tag_s_mv).map(
-                (i) => ' ' + i.replace('.', '')
-              )
-            : [],
-      };
-      cache[name] = data;
-      func(data);
-    };
-  }
-}
-
 function findClassesOnSchedulePreviewPage(string) {
   let matches = document.getElementsByClassName('action-view-section');
   let scheduleBuilderClasses = [];
@@ -357,48 +387,4 @@ function findClassesOnSchedulePreviewPage(string) {
   }
   scheduleBuilderClasses = scheduleBuilderClasses.filter((e, i) => i % 2 == 1);
   return scheduleBuilderClasses;
-}
-
-function hideSideBar() {
-  document.getElementById('chromeExtensionSideBar').style.display = 'none';
-  document.getElementById('chromeExtensionHideButton').style.display = 'none';
-  document.getElementById('chromeExtensionShowButton').style.display = 'block';
-  document.getElementById('chromeExtensionHideButton').style.display = 'none';
-  document.body.style.width = '100%';
-}
-
-function showSideBar() {
-  document.getElementById('chromeExtensionSideBar').style.display = 'block';
-  document.getElementById('chromeExtensionHideButton').style.display = 'block';
-  document.getElementById('chromeExtensionShowButton').style.display = 'none';
-  document.getElementById('chromeExtensionHideButton').style.display = 'block';
-  document.body.style.width = '80%';
-}
-
-function searchProfessors(string) {
-  console.log('searchingForProfessors');
-  let professorList = [];
-  let classes = Array.from(string.split('<a href="http://www.umn.edu/lookup?')).map((i) => i);
-  for (let i = 0; i < classes.length; i++) {
-    let classObj = classes[i];
-    // let classObjHTML = classObj.innerHTML;
-    if (classes[i].includes('type=Internet+ID')) {
-      let professorName = classes[i]
-        .split('type=Internet+ID')[1]
-        .split('target="_blank">')[1]
-        .split('</a><br>')[0]
-        .toLowerCase()
-        .replace(' ', '+');
-      professorList.push(professorName);
-    }
-  }
-  let professors = [...new Set(professorList)];
-  console.log(professors);
-  return professors;
-}
-
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
 }

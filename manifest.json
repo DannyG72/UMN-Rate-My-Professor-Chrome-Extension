@@ -5,14 +5,14 @@
   "description": "Load Rate My Professor ratings on the University of Minnesota schedule builder website! This extension works for UMN TC.",
   "permissions": ["https://solr-aws-elb-production.ratemyprofessors.com/*", "storage"],
   "icons": {
-    "128": "icon128.png",
-    "32": "icon32.png",
-    "48": "icon.png"
+    "128": "images/icon128.png",
+    "32": "images/icon32.png",
+    "48": "images/icon.png"
   },
   "browser_action": {
     "default_icon": {
-      "16": "icon16.png",
-      "32": "icon32.png"
+      "16": "images/icon16.png",
+      "32": "images/icon32.png"
     },
     "default_popup": "popup.html",
     "default_title": "Check here to see Rate My Goper instructions and developer credits."
@@ -24,10 +24,12 @@
         "jquery-3.4.1.min.js",
         "bootstrap/js/bootstrap.bundle.js",
         "bootstrap/js/bootstrap.js",
+        "utils.js",
         "content.js"
       ],
       "css": ["bootstrap/css/bootstrap.css", "bootstrap/css/bootstrap-grid.css", "main.css"],
       "run_at": "document_end"
     }
-  ]
+  ],
+  "web_accessible_resources": ["images/icon32.png"]
 }

@@ -4,7 +4,7 @@
   "description": "Load Rate My Professor ratings on the University of Minnesota schedule builder website! This extension works for UMN TC.",
   "main": "manifest.json",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "zip": "zip umn-rate-my-professor-chrome-extension.zip *"
   },
   "repository": {
     "type": "git",

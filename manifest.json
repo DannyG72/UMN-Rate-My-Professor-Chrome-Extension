@@ -24,10 +24,14 @@
         "libraries/jquery/jquery-3.5.1.min.js",
         "libraries/bootstrap/js/bootstrap.bundle.js",
         "libraries/bootstrap/js/bootstrap.js",
-        "utils.js",
-        "content.js"
+        "js/utils.js",
+        "js/content.js"
       ],
-      "css": ["bootstrap/css/bootstrap.css", "bootstrap/css/bootstrap-grid.css", "main.css"],
+      "css": [
+        "libraries/bootstrap/css/bootstrap.css",
+        "libraries/bootstrap/css/bootstrap-grid.css",
+        "css/main.css"
+      ],
       "run_at": "document_end"
     }
   ],

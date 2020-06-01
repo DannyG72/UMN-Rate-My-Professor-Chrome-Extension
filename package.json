@@ -1,0 +1,25 @@
+{
+  "name": "umn-rate-my-professor-chrome-extension",
+  "version": "0.3.0",
+  "description": "Load Rate My Professor ratings on the University of Minnesota schedule builder website! This extension works for UMN TC.",
+  "main": "manifest.json",
+  "scripts": {
+    "zip": "zip umn-rate-my-professor-chrome-extension.zip *"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DannyG72/UMN-Rate-My-Professor-Chrome-Extension.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "js",
+    "umn"
+  ],
+  "author": "Daniel Glynn, Samuel O'Brien, and Broden Wanner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DannyG72/UMN-Rate-My-Professor-Chrome-Extension/issues"
+  },
+  "homepage": "https://github.com/DannyG72/UMN-Rate-My-Professor-Chrome-Extension#readme"
+}

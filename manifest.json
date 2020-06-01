@@ -3,32 +3,37 @@
   "name": "Rate My Gopher UMN Professor Ratings",
   "version": "0.2",
   "description": "Load Rate My Professor ratings on the University of Minnesota schedule builder website! This extension works for UMN TC.",
-  "browser_action": {
-  },
-  "permissions": [
-     "https://solr-aws-elb-production.ratemyprofessors.com/*",
-     "storage"
-  ],
+  "permissions": ["https://solr-aws-elb-production.ratemyprofessors.com/*", "storage"],
   "icons": {
-        "128": "icon128.png",
-        "32": "icon32.png",
-        "48": "icon.png"
+    "128": "images/icon128.png",
+    "32": "images/icon32.png",
+    "48": "images/icon.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "images/icon16.png",
+      "32": "images/icon32.png"
     },
-    "browser_action": {
-            "default_icon": {
-            "16": "icon16.png",
-            "32": "icon32.png"
-        },
-        "default_popup": "popup.html",
-        "default_title": "Check here to see Rate My Goper instructions and developer credits."
-    },
+    "default_popup": "popup.html",
+    "default_title": "Check here to see Rate My Goper instructions and developer credits."
+  },
   "content_scripts": [
     {
-      "matches": [
-        "https://schedulebuilder.umn.edu/*"
+      "matches": ["https://schedulebuilder.umn.edu/*"],
+      "js": [
+        "libraries/jquery/jquery-3.5.1.min.js",
+        "libraries/bootstrap/js/bootstrap.bundle.js",
+        "libraries/bootstrap/js/bootstrap.js",
+        "js/utils.js",
+        "js/content.js"
       ],
-      "js": ["jquery-3.4.1.min.js","content.js"],
+      "css": [
+        "libraries/bootstrap/css/bootstrap.css",
+        "libraries/bootstrap/css/bootstrap-grid.css",
+        "css/main.css"
+      ],
       "run_at": "document_end"
     }
-  ]
+  ],
+  "web_accessible_resources": ["images/icon32.png"]
 }

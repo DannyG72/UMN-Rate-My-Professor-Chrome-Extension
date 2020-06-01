@@ -16,10 +16,10 @@
     "js",
     "umn"
   ],
-  "author": "Daniel Glynn, Samuel O'Brian, and Broden Wanner",
+  "author": "Daniel Glynn, Samuel O'Brien, and Broden Wanner",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DannyG72/UMN-Rate-My-Professor-Chrome-Extension/issues"
   },
-  "homepage": "https://github.com/DannyG72/UMN-Rate-My-Professor-Chrome-Extension"
+  "homepage": "https://github.com/DannyG72/UMN-Rate-My-Professor-Chrome-Extension#readme"
 }
